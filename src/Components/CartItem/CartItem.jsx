@@ -27,7 +27,10 @@ export const CartItem = ({
                         <h6><strong>{`$${price} `}<span className="text-muted">x</span></strong></h6>
                     </div>
                     <div className="col-4">
-                        <input type="text" className="form-control input-sm" value={quantity} onChange={(id, e) => updateQuantity(id, e.target.value, )} />
+                        <input type="number" 
+                               className="form-control input-sm" 
+                               value={quantity} 
+                               onChange={(e) => updateQuantity(e.target.value, id)} />
                     </div>
                     <div className="col-2">
                         <button type="button" className="btn btn-link btn" onClick={() => removeItem(id)}>

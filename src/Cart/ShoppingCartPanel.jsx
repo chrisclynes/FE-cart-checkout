@@ -13,7 +13,6 @@ export const ShoppingCartPanel = () => {
   const [shoppingCartItems, setShoppingCarItems] = useState(cartItems)
   const [shoppingCartTotal, setShoppingCartTotal] = useState(null);
   const [cartIsdUpdated, setCartIsUpdated] = useState(false);
-
   
 
   useEffect(() => {
@@ -30,14 +29,28 @@ export const ShoppingCartPanel = () => {
     const prevItems = [...shoppingCartItems];
     let newItems;
     if(prevItems.find((item) => item.id === id)) {
-      newItems = prevItems.filter((item) => item.id !== id)
+      newItems = prevItems.filter((item) => item.id !== id);
     }
     setShoppingCarItems(newItems);
     setCartIsUpdated(true);
    
   }
-  const updateQuantity = (id, value) => {
-    
+  const updateQuantity = (value, id) => {
+    const prevItems = [...shoppingCartItems];
+    let newItems = prevItems.map((item) => item.id === id ? {...item, quantity: value} : item );
+
+    setShoppingCarItems(newItems);
+  }
+
+  const updateItems = () => {
+    //check if quantiy value set to empty or 0
+    shoppingCartItems.forEach((item) => {
+      if(item.quantity == 0 || item.quantity == ''){
+        updateQuantity(1, item.id)
+      }
+    })
+
+    setCartIsUpdated(true);
   }
 
   return (
@@ -85,7 +98,10 @@ export const ShoppingCartPanel = () => {
                       <h6 className="text-end mb-0">Added items?</h6>
                     </div>
                     <div className="col-3">
-                      <button type="button" className="btn btn-default btn-sm w-100 border">
+                      <button type="button" 
+                              className="btn btn-default btn-sm w-100 border"
+                              onClick={updateItems}
+                            >
                         Update cart
                       </button>
                     </div>
