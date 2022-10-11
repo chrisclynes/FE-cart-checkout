@@ -1,12 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { faShareAlt, faShoppingCart, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+//created custom component for individaul cart items
 import { CartItem } from '../Components/CartItem/CartItem';
-import cartItems from '../data';
+
+//import data for shopping cart items, mock database
+import { cartItems } from '../data';
+
 
 export const ShoppingCartPanel = () => {
+  const [shoppingCartTotal, setShoppingCartTotal] = useState(null);
+  const [cartIsdUpdated, setCartIsUpdated] = useState(false);
+
   
+
+  useEffect(() => {
+    const total = cartItems.reduce((sum, curItem) => { return sum + parseFloat(curItem.price)}, 0).toFixed(2);
+
+    setShoppingCartTotal(total);
+  }, [cartIsdUpdated])
+
+  //handler functions for cart updates
+  const removeItem = () => {
+
+  }
+  const updateQuantity = () => {
+
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -30,30 +52,23 @@ export const ShoppingCartPanel = () => {
               </div>
             </div>
             <div className="card-body">
-              <CartItem />
-                <div className="row">
-                  <div className="col-2"><img className="img-responsive" src="http://placehold.it/100x70" alt="placeholder" />
-                  </div>
-                  <div className="col-4">
-                    <h4 className="product-name"><strong>Product name</strong></h4><h4><small>Product description</small></h4>
-                  </div>
-                  <div className="col-6">
-                    <div className="row">
-                      <div className="col-6 text-end">
-                        <h6><strong>25.00 <span className="text-muted">x</span></strong></h6>
-                      </div>
-                      <div className="col-4">
-                        <input type="text" className="form-control input-sm" value="1" />
-                      </div>
-                      <div className="col-2">
-                        <button type="button" className="btn btn-link btn">
-                          <FontAwesomeIcon icon={faTrash} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr />
+                {
+                  cartItems.map((item, i) => {
+                    return (
+                      <CartItem 
+                        key={i} 
+                        id={item.id} 
+                        img={item.img}
+                        productName={item.productName}
+                        productDescription={item.productDescription}
+                        price={item.price}
+                        quantity={item.quantity}
+                        removeItem={removeItem}
+                        updateQuantity={updateQuantity}
+                        />
+                    )
+                  })
+                }
                   <div className="row text-center align-items-center">
                     <div className="col-9">
                       <h6 className="text-end mb-0">Added items?</h6>
@@ -68,7 +83,7 @@ export const ShoppingCartPanel = () => {
                 <div className="card-footer">
                   <div className="row text-center align-items-center">
                     <div className="col-9">
-                      <h4 className="text-end mb-0 h5">Total <strong>$50.00</strong></h4>
+                      <h4 className="text-end mb-0 h5">Total <strong>{`$${shoppingCartTotal}`}</strong></h4>
                     </div>
                     <div className="col-3">
                       <button type="button" className="btn btn-success w-100">
