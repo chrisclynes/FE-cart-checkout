@@ -10,23 +10,34 @@ import { cartItems } from '../data';
 
 
 export const ShoppingCartPanel = () => {
+  const [shoppingCartItems, setShoppingCarItems] = useState(cartItems)
   const [shoppingCartTotal, setShoppingCartTotal] = useState(null);
   const [cartIsdUpdated, setCartIsUpdated] = useState(false);
 
   
 
   useEffect(() => {
-    const total = cartItems.reduce((sum, curItem) => { return sum + parseFloat(curItem.price)}, 0).toFixed(2);
+    const total = shoppingCartItems.reduce((sum, curItem) => { return sum + parseFloat(curItem.price * curItem.quantity)}, 0).toFixed(2);
 
     setShoppingCartTotal(total);
+    setCartIsUpdated(false);
   }, [cartIsdUpdated])
 
   //handler functions for cart updates
-  const removeItem = () => {
 
+
+  const removeItem = (id) => {
+    const prevItems = [...shoppingCartItems];
+    let newItems;
+    if(prevItems.find((item) => item.id === id)) {
+      newItems = prevItems.filter((item) => item.id !== id)
+    }
+    setShoppingCarItems(newItems);
+    setCartIsUpdated(true);
+   
   }
-  const updateQuantity = () => {
-
+  const updateQuantity = (id, value) => {
+    
   }
 
   return (
@@ -53,7 +64,7 @@ export const ShoppingCartPanel = () => {
             </div>
             <div className="card-body">
                 {
-                  cartItems.map((item, i) => {
+                  shoppingCartItems.map((item, i) => {
                     return (
                       <CartItem 
                         key={i} 

@@ -18,12 +18,12 @@ export let cartItems = [
 
     },
     {
-        id: 23,
+        id: 57,
         img: "http://placehold.it/100x70",
         productName: 'Notepad',
         productDescription: 'Basic notepad, black color',
         price: 4.99,
-        quantity: 1,
+        quantity: 2,
 
     },
 ]
