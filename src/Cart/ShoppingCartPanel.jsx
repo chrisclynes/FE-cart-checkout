@@ -1,55 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { faShareAlt, faShoppingCart, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //created custom component for individaul cart items
 import { CartItem } from '../Components/CartItem/CartItem';
-
-//import data for shopping cart items, mock database
-import { cartItems } from '../data';
-
+import { StoreContext } from '../Context/context';
 
 export const ShoppingCartPanel = () => {
-  const [shoppingCartItems, setShoppingCartItems] = useState(cartItems)
-  const [shoppingCartTotal, setShoppingCartTotal] = useState(null);
-  const [cartIsUpdated, setCartIsUpdated] = useState(true);
-  
-//update cart total if cart has been updated
-  useEffect(() => {
-    if(cartIsUpdated) {
-      const total = shoppingCartItems.reduce((sum, curItem) => { 
-        return sum + parseFloat(curItem.price * curItem.quantity)
-      }, 0).toFixed(2);
-  
-      setShoppingCartTotal(total);
-    }
-  
-    return setCartIsUpdated(false);
-  }, [cartIsUpdated])
-
-  //handler functions for cart updates
-  const removeItem = (id) => {
-    const newItems = [...shoppingCartItems].filter(item => item.id !== id);
-    
-    setShoppingCartItems(newItems);
-    setCartIsUpdated(true);
-  }
-  const updateQuantity = (value, id) => {
-    let newItems = [...shoppingCartItems].map(item => item.id === id ? {...item, quantity: value} : item );
-
-    setShoppingCartItems(newItems);
-  }
-
-  const updateItems = () => {
-
-    shoppingCartItems.forEach((item) => {
-      if(item.quantity <= 0 || item.quantity == ''){
-        updateQuantity(1, item.id)
-      }
-    })
-
-    setCartIsUpdated(true);
-  }
+  const { shoppingCartItems, updateItems, shoppingCartTotal, removeItem, updateQuantity } = useContext(StoreContext);
 
   return (
     <div className="container">
