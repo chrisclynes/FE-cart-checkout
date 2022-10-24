@@ -10,42 +10,40 @@ import { cartItems } from '../data';
 
 
 export const ShoppingCartPanel = () => {
-  const [shoppingCartItems, setShoppingCarItems] = useState(cartItems)
+  const [shoppingCartItems, setShoppingCartItems] = useState(cartItems)
   const [shoppingCartTotal, setShoppingCartTotal] = useState(null);
-  const [cartIsdUpdated, setCartIsUpdated] = useState(false);
+  const [cartIsUpdated, setCartIsUpdated] = useState(true);
   
-
+//update cart total if cart has been updated
   useEffect(() => {
-    const total = shoppingCartItems.reduce((sum, curItem) => { return sum + parseFloat(curItem.price * curItem.quantity)}, 0).toFixed(2);
-
-    setShoppingCartTotal(total);
-    setCartIsUpdated(false);
-  }, [cartIsdUpdated])
+    if(cartIsUpdated) {
+      const total = shoppingCartItems.reduce((sum, curItem) => { 
+        return sum + parseFloat(curItem.price * curItem.quantity)
+      }, 0).toFixed(2);
+  
+      setShoppingCartTotal(total);
+    }
+  
+    return setCartIsUpdated(false);
+  }, [cartIsUpdated])
 
   //handler functions for cart updates
-
-
   const removeItem = (id) => {
-    const prevItems = [...shoppingCartItems];
-    let newItems;
-    if(prevItems.find((item) => item.id === id)) {
-      newItems = prevItems.filter((item) => item.id !== id);
-    }
-    setShoppingCarItems(newItems);
+    const newItems = [...shoppingCartItems].filter(item => item.id !== id);
+    
+    setShoppingCartItems(newItems);
     setCartIsUpdated(true);
-   
   }
   const updateQuantity = (value, id) => {
-    const prevItems = [...shoppingCartItems];
-    let newItems = prevItems.map((item) => item.id === id ? {...item, quantity: value} : item );
+    let newItems = [...shoppingCartItems].map(item => item.id === id ? {...item, quantity: value} : item );
 
-    setShoppingCarItems(newItems);
+    setShoppingCartItems(newItems);
   }
 
   const updateItems = () => {
-    //check if quantiy value set to empty or 0
+
     shoppingCartItems.forEach((item) => {
-      if(item.quantity == 0 || item.quantity == ''){
+      if(item.quantity <= 0 || item.quantity == ''){
         updateQuantity(1, item.id)
       }
     })

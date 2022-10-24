@@ -14,6 +14,15 @@ export const CartItem = ({
         updateQuantity,
         }
     ) => {
+
+    const handleInput = (e) => {
+        //convert input to number only
+        const value = e.target.value.replace(/[^\d]/g,'');
+
+        updateQuantity(value, id)
+    }
+
+        
   return (
     <>
      <div className="row">
@@ -27,10 +36,10 @@ export const CartItem = ({
                         <h6><strong>{`$${price} `}<span className="text-muted">x</span></strong></h6>
                     </div>
                     <div className="col-4">
-                        <input type="number" 
+                        <input type="text"
                                className="form-control input-sm" 
                                value={quantity} 
-                               onChange={(e) => updateQuantity(e.target.value, id)} />
+                               onChange={handleInput} />
                     </div>
                     <div className="col-2">
                         <button type="button" className="btn btn-link btn" onClick={() => removeItem(id)}>
