@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { faShareAlt, faShoppingCart, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -69,9 +70,13 @@ export const ShoppingCartPanel = () => {
                       <h4 className="text-end mb-0 h5">Total <strong>{`$${shoppingCartTotal}`}</strong></h4>
                     </div>
                     <div className="col-3">
-                      <button type="button" className="btn btn-success w-100">
-                        Checkout
-                      </button>
+                      <Link
+                        to="/checkout"
+                      >
+                        <button type="button" className="btn btn-success w-100">
+                          Checkout
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

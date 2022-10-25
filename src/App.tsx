@@ -1,17 +1,27 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './App.scss';
 import { CheckoutForm } from './Checkout/CheckoutForm';
 import { ShoppingCartPanel } from './Cart/ShoppingCartPanel';
 import { PaymentInterface } from './Payment/PaymentInterface';
-import { StoreContextProvider } from './Context/context';
+
 
 
 export const App = () => {
   return (
     <>
-      <StoreContextProvider>
-        <ShoppingCartPanel />
-      </StoreContextProvider>
+      <Routes>
+        <Route
+          path='/'
+          element={<ShoppingCartPanel />}
+        >
+        </Route>
+        <Route
+          path='/checkout'
+          element={<CheckoutForm />}
+        >
+        </Route>
+      </Routes>
     </>
   );
 }
